@@ -1,0 +1,24 @@
+services:
+  survey-tool:
+    image: survey-tool:latest
+    build:
+      context: .
+      dockerfile: Dockerfile
+    restart: on-failure
+    ports:
+      # Port definition, needs to be same as PORT env variable
+      - 3000:3000
+    environment:
+      - PORT=3000
+    networks:
+      - survey-net
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
+      interval: 1m30s
+      timeout: 30s
+      retries: 3
+      start_period: 30s
+    
+networks:
+  survey-net:
+    driver: bridge
