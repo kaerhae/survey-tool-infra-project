@@ -6,7 +6,6 @@ Simple backend server, which handles surveys with following operations
     - Listing surveys
     - Listing one survey
     - Post answered survey
-    - Delete one survey
 
 Keeping backend server nice and simple, so we have a easy possibility to study following technologies:
 
