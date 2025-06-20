@@ -2,7 +2,7 @@ import request from 'supertest';
 import { describe, it, expect, beforeAll } from 'vitest'
 
 import app from '../src/app';
-import { NewSurvey } from '../src/types/types';
+import { NewSSurveyTemplate } from '../src/types/types';
 
 describe('GET /api/surveys', () => {
     it('should return 200 and return json', async () => {
@@ -15,7 +15,7 @@ describe('GET /api/surveys', () => {
 describe('POST /api/surveys', () => {
     it('should return 201 and return json', async () => {
         const title = "test title";
-        const data: NewSurvey = {
+        const data: NewSSurveyTemplate = {
             "title": title,
             questions: [],
         }
@@ -35,7 +35,7 @@ describe('PUT /api/surveys', () => {
     const title = "test title";
     let existing;
     beforeAll(async () => {
-        const data: NewSurvey = {
+        const data: NewSSurveyTemplate = {
             "title": title,
             questions: [],
         }
