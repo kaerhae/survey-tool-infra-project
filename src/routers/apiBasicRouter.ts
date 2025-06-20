@@ -1,12 +1,12 @@
 import express from 'express';
 import { apiVersion } from '../consts';
+import { logRequest } from '../logger/logger';
 const router = express.Router();
 
-//
-// Todo: Log incoming request
-//
 
-router.get("/api", (_, res) => {
+
+router.get("/api", (req, res) => {
+    logRequest(req);
     res.status(200).send(`Server API version: ${apiVersion}`);
 });
 
@@ -20,11 +20,9 @@ router.get("/healthcheck", (_, res) => {
     });
 })
 
-router.get("/", (_, res) => {
+router.get("/", (req, res) => {
+    logRequest(req);
     res.status(200).send("Server up and running!");
 });
-
-
-
 
 export default router;
