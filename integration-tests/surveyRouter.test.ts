@@ -1,5 +1,5 @@
 import request from 'supertest';
-import { describe, it, expect, vi, beforeAll } from 'vitest'
+import { describe, it, expect, beforeAll } from 'vitest'
 
 import app from '../src/app';
 import { NewSurvey } from '../src/types/types';
@@ -14,7 +14,7 @@ describe('GET /api/surveys', () => {
 
 describe('POST /api/surveys', () => {
     it('should return 201 and return json', async () => {
-        let title = "test title";
+        const title = "test title";
         const data: NewSurvey = {
             "title": title,
             questions: [],
@@ -32,7 +32,7 @@ describe('POST /api/surveys', () => {
 })
 
 describe('PUT /api/surveys', () => {
-    let title = "test title";
+    const title = "test title";
     let existing;
     beforeAll(async () => {
         const data: NewSurvey = {
@@ -40,7 +40,7 @@ describe('PUT /api/surveys', () => {
             questions: [],
         }
 
-        const _ = await request(app)
+        await request(app)
             .post("/api/surveys")
             .send(data);
         const surveys = await request(app).get("/api/surveys");
