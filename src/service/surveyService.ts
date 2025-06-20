@@ -2,7 +2,7 @@ import { NewSurvey, Survey } from "../types/types";
 import { v4 as uuidv4 } from 'uuid';
 
 
-let surveys: Survey[] = [];
+const surveys: Survey[] = [];
 
 // Create a new survey entity. 'questions' field maybe empty,
 // but title is required. Since ID is generated here,
@@ -26,7 +26,7 @@ const getSurveys = (): Survey[] => {
 }
 
 const updateSurvey = (id: string, body: NewSurvey) => {
-    let existing = getSurveyById(id);
+    const existing = getSurveyById(id);
     if (!existing) {
         console.log("Survey does not exist")
         throw new Error("Survey does not exist");
