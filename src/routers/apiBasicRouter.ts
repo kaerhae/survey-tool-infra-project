@@ -1,12 +1,10 @@
 import express from 'express';
 import { apiVersion } from '../consts';
-import { logRequest } from '../logger/logger';
 const router = express.Router();
 
 
 
-router.get("/api", (req, res) => {
-    logRequest(req);
+router.get("/api", (_, res) => {
     res.status(200).send(`Server API version: ${apiVersion}`);
 });
 
@@ -20,8 +18,7 @@ router.get("/healthcheck", (_, res) => {
     });
 })
 
-router.get("/", (req, res) => {
-    logRequest(req);
+router.get("/", (_, res) => {
     res.status(200).send("Server up and running!");
 });
 
