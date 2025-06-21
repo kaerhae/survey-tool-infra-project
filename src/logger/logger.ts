@@ -20,8 +20,7 @@ export const logRequest = (req: Request) => {
 }
 
 
-export const logResponse = (res: Response, receivedAt: number) =>  {
-    const elapsed = Date.now() - receivedAt;
+export const logResponse = (res: Response, elapsed: number) =>  {
     const resObject = {
         "log_type": "response",
         "status_code": res.statusCode,
@@ -33,14 +32,12 @@ export const logResponse = (res: Response, receivedAt: number) =>  {
     logger.info(resObject, "Response was sent")
 }
 
-export const logError = (res: Response, errMsg: string, receivedAt: number) =>  {
-    const elapsed = Date.now() - receivedAt;
+export const logError = (res: Response, errMsg: string) =>  {
     const resObject = {
         "log_type": "response",
         "status_code": res.statusCode,
         "content_type": res.contentType,
         "content_length": res.strictContentLength,
-        "response_time": elapsed
     };
 
     logger.error(resObject, errMsg);
