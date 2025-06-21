@@ -8,6 +8,7 @@ export default defineConfig([
   globalIgnores([
     "dist/**/*",
     "!dist/test.js",
+    "swagger/"
   ]),
   { files: ["**/*.{js,mjs,cjs,ts,mts,cts}"], plugins: { js }, extends: ["js/recommended"] },
   { files: ["**/*.js"], languageOptions: { sourceType: "commonjs" } },

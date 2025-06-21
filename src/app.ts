@@ -1,11 +1,13 @@
 import express from 'express';
 import cors from "cors";
 import prometheus from "prom-client";
+import swagger from "swagger-ui-express";
+
 import indexRouter from './routers/apiBasicRouter';
 import surveyRouter from './routers/surveyRouter';
 import answerRouter from './routers/answerRouter';
 import { logRequest, logResponse } from './logger/logger';
-
+import swaggerDocument from "../swagger/swagger.json"
 
 const app = express();
 
@@ -22,6 +24,8 @@ prometheus.collectDefaultMetrics();
 
 app.use(express.json());
 app.use(cors());
+app.use("/swagger", swagger.serve)
+app.get("/swagger", swagger.setup(swaggerDocument));
 app.use((req, res, next) => {
     logRequest(req);
     res.on("finish", () => {
@@ -34,6 +38,7 @@ app.use((req, res, next) => {
     });
     next();
 });
+
 app.use("/api/surveys", surveyRouter)
 app.use("/api/answers", answerRouter);
 app.get('/metrics', async (_, res) => {
