@@ -1,7 +1,31 @@
 import { Request, Response } from "express";
 import pino from "pino";
+import type { LokiOptions } from "pino-loki";
 
-const logger = pino();
+const lokiUrl = process.env.LOKI_HOST;
+const lokiPort = process.env.LOKI_PORT;
+
+const transport = pino.transport<LokiOptions>({
+    targets: [
+         {
+            target: "pino-loki",
+            options: {
+                batching: true,
+                interval: 5,
+
+                host: `http://${lokiUrl}:${lokiPort}`,
+                labels: {
+                    application: "survey-tool",
+                },
+            }
+         },
+         {
+            target: "pino-pretty",
+         }
+    ]
+});
+
+const logger = pino(transport);
 
 export const logRequest = (req: Request) => {
     const reqObject = {

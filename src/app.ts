@@ -9,6 +9,11 @@ import answerRouter from './routers/answerRouter';
 import { logRequest, logResponse } from './logger/logger';
 import swaggerDocument from "../swagger/swagger.json"
 
+
+if (!process.env.LOKI_HOST || !process.env.LOKI_PORT) {
+    throw new Error("Environment variables missing");
+};
+
 const app = express();
 
 const responseTimes = new prometheus.Histogram({

@@ -5,19 +5,23 @@ services:
       context: .
       dockerfile: Dockerfile
     restart: on-failure
+    container_name: survey-tool
     ports:
       # Port definition, needs to be same as PORT env variable
-      - 3000:3000
+      - 9000:9000
     environment:
-      - PORT=3000
+      - PORT=9000
+      - LOKI_URL=loki
+      - LOKI_PORT=3100
     networks:
       - survey-net
-    healthcheck:
-      test: ["CMD", "curl", "-f", "http://localhost:3000/healthcheck"]
-      interval: 1m30s
-      timeout: 30s
-      retries: 3
-      start_period: 30s
+    # survey-tool containers dependencies
+    depends_on:
+      loki:
+        condition: service_healthy
+      grafana:
+        condition: service_started
+
   prometheus:
     image: prom/prometheus:latest
     container_name: prometheus
@@ -36,8 +40,44 @@ services:
     networks:
       - survey-net
 
+  loki:
+    image: grafana/loki:3.4.1
+    container_name: loki
+    ports:
+      - "3100:3100"
+    command: -config.file=/etc/loki/config.yaml
+    volumes:
+      - ./infra/grafana/loki/loki.yaml:/etc/loki/config.yaml
+      - loki_data:/loki
+    # Loki takes appr. 15 seconds to get ready on startup,
+    # this container has healthcheck, which survey-tool can poll
+    healthcheck:
+      test: wget --no-verbose --tries=1 --spider http://localhost:3100/ready || exit 1
+      interval: 10s
+      timeout: 1s
+      start_period: 20s
+      retries: 12
+    networks:
+      - survey-net
+
+  grafana:
+    image: grafana/grafana:latest
+    restart: unless-stopped
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - survey-net
+    depends_on:
+      - loki
+    volumes:
+      - .infra/grafana/provisioning/datasources:/etc/grafana/provisioning/datasources
+      - 'grafana_data:/var/lib/grafana'
+
 volumes:
   prometheus_data: {}
+  grafana_data: {}
+  loki_data: {}
     
 networks:
   survey-net:
