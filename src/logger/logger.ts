@@ -1,4 +1,4 @@
-import { application, Request, Response } from "express";
+import { Request, Response } from "express";
 import pino from "pino";
 import type { LokiOptions } from "pino-loki";
 
