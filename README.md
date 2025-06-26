@@ -60,6 +60,18 @@ Then services can be started with:
 docker compose up -d
 ```
 
+## k3s
+
+This project uses `k3s` for single cluster setup. Official documentation can be found in [docs.k3s.io](https://docs.k3s.io/installation), but basicly this command can get you quite far already:
+
+`curl -sfL https://get.k3s.io | sh -s - --write-kubeconfig-mode 644`
+
+For local development without Docker Hub, survey-tool image can built and pushed to k3s image registry by running:
+
+`(sudo) ./build-and-push-image-to-k3s.sh`
+
+More information about this project k3s setup in [this README](infra/k3s).
+
 
 ## TODOS to study
 ### Prometheus
@@ -73,10 +85,6 @@ TODO: Reverse proxy, https
 ## MAYBE TODOS to study
 
 If there is still time and interest, maybe to study following other technologies:
-
-### Kubernetes / K3s
-
-TODO: Pods, services, ingress
 
 
 ### Splunk
