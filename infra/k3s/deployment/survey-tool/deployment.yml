@@ -1,0 +1,27 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  namespace: st
+  name: survey-tool
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: survey-tool
+  template:
+    metadata:
+      labels:
+        app: survey-tool
+    spec:
+      containers:
+        - name: log-output-writer
+          image: kaerhae/survey-tool:testing-0.0.1
+          env:
+          - name: PORT
+            value: "9000"
+          - name: LOKI_HOST
+            value: loki
+          - name: LOKI_PORT
+            value: "3100"
+          ports:
+          - containerPort: 9000
